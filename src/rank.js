@@ -1,5 +1,6 @@
 const CHINA = "china";
 const EASTINDIES = "east-indies";
+
 function isIncludeChina(zone) {
   return zone === CHINA;
 }
@@ -12,11 +13,11 @@ function hasChina(history) {
   return history.some((v) => CHINA === v.zone);
 }
 
-function isLengthLessThan5(length) {
-  return length < 5;
+function isLengthLessThanRank(rank, length) {
+  return length < rank;
 }
 
-function isLengthMoreThanRank(rank,length) {
+function isLengthMoreThanRank(rank, length) {
   return length > rank;
 }
 
@@ -26,15 +27,17 @@ function checkRating(vpf, vr, chr) {
 
 function voyageRisk(voyage) {
   let result = 1;
-  isLengthMoreThanRank(4,voyage.length) ? (result += 2) : result;
-  isLengthMoreThanRank(8,voyage.length) ? (result += voyage.length - 8) : result;
+  isLengthMoreThanRank(4, voyage.length) ? (result += 2) : result;
+  isLengthMoreThanRank(8, voyage.length)
+    ? (result += voyage.length - 8)
+    : result;
   isIncludeChinaAndIndies(voyage.zone) ? (result += 4) : result;
   return Math.max(result, 0);
 }
 
 function captainHistoryRisk(voyage, history) {
   let result = 1;
-  isLengthLessThan5(history.length) ? (result += 4) : result;
+  isLengthLessThanRank(5, history.length) ? (result += 4) : result;
   result += history.filter((v) => v.profit < 0).length;
   if (isIncludeChina(voyage.zone) && hasChina(history)) {
     result -= 2;
@@ -47,12 +50,12 @@ function voyageProfitFactor(voyage, history) {
   isIncludeChinaAndIndies(voyage.zone) ? (result += 1) : result;
   if (isIncludeChina(voyage.zone) && hasChina(history)) {
     result += 3;
-    isLengthMoreThanRank(10,history.length) ? (result += 1) : result;
-    isLengthMoreThanRank(12,voyage.length) ? (result += 1) : result;
-    isLengthMoreThanRank(18,voyage.length) ? (result -= 1) : result;
+    isLengthMoreThanRank(10, history.length) ? (result += 1) : result;
+    isLengthMoreThanRank(12, voyage.length) ? (result += 1) : result;
+    isLengthMoreThanRank(18, voyage.length) ? (result -= 1) : result;
   } else {
-    isLengthMoreThanRank(8,history.length) ? (result += 1) : result;
-    isLengthMoreThanRank(14,voyage.length) ? (result -= 1) : result;
+    isLengthMoreThanRank(8, history.length) ? (result += 1) : result;
+    isLengthMoreThanRank(14, voyage.length) ? (result -= 1) : result;
   }
   return result;
 }
