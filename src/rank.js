@@ -6,17 +6,17 @@ function voyageRisk (voyage) {
   if (voyage.length > 8) {
     result += voyage.length - 8;
   }
-  if ([
-    'china',
-    'east-indies',
-  ].includes(voyage.zone)) {
-    result += 4;
-  }
+
+  isIncludeChinaAndIndies(voyage.zone) ? result += 4 : result;
   return Math.max(result, 0);
 }
 
 function hasChina (history) {
   return history.some(v => 'china' === v.zone);
+}
+
+function isIncludeChinaAndIndies(zone){
+  if(['china','east-indies'].includes(zone)) return true
 }
 
 function captainHistoryRisk (voyage, history) {
