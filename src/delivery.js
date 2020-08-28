@@ -15,11 +15,11 @@ const noRushStates = {
 
 function deliveryDate(anOrder, isRush) {
   if (isRush) {
-    let deliveryTime = rushStates[anOrder.deliveryState] || 3;
-    return anOrder.placedOn.plusDays(1 + deliveryTime);
+    return anOrder.placedOn.plusDays(
+      1 + (rushStates[anOrder.deliveryState] || 3)
+    );
   } else {
-    let deliveryTime = noRushStates[anOrder.deliveryState] || 4;
-    return anOrder.placedOn.plusDays(2 + deliveryTime);
+    return anOrder.placedOn.plusDays(2 + (noRushStates[anOrder.deliveryState] || 4));
   }
 }
 
