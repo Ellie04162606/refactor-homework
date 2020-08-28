@@ -28,6 +28,22 @@ function isLengthMoreThan10(length) {
   return length > 10;
 }
 
+function isLengthMoreThan12(length) {
+  return length > 12;
+}
+
+function isLengthMoreThan14(length) {
+  return length > 14;
+}
+
+function isLengthMoreThan18(length) {
+  return length > 18;
+}
+
+function checkRating(vpf, vr, chr) {
+  return vpf * 3 > vr + chr * 2 ? "A" : "B";
+}
+
 function voyageRisk(voyage) {
   let result = 1;
   isLengthMoreThan4(voyage.length) ? (result += 2) : result;
@@ -53,30 +69,22 @@ function voyageProfitFactor(voyage, history) {
   if (isIncludeChina(voyage.zone) && hasChina(history)) {
     result += 3;
     isLengthMoreThan10(history.length) ? (result += 1) : result;
-    if (voyage.length > 12) {
-      result += 1;
-    }
-    if (voyage.length > 18) {
-      result -= 1;
-    }
+    isLengthMoreThan12(voyage.length) ? (result += 1) : result;
+    isLengthMoreThan18(voyage.length) ? (result -= 1) : result;
   } else {
     isLengthMoreThan8(history.length) ? (result += 1) : result;
-    if (voyage.length > 14) {
-      result -= 1;
-    }
+    isLengthMoreThan14(voyage.length) ? (result -= 1) : result;
   }
   return result;
 }
 
+
 function rating(voyage, history) {
-  const vpf = voyageProfitFactor(voyage, history);
-  const vr = voyageRisk(voyage);
-  const chr = captainHistoryRisk(voyage, history);
-  if (vpf * 3 > vr + chr * 2) {
-    return "A";
-  } else {
-    return "B";
-  }
+  return checkRating(
+    voyageProfitFactor(voyage, history),
+    voyageRisk(voyage),
+    captainHistoryRisk(voyage, history)
+  );
 }
 
 module.exports = {
